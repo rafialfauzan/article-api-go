@@ -6,13 +6,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutes(r *gin.Engine, articleHandler *handler.ArticleHandler) {
-	api := r.Group("/api")
+func SetupArticleRoutes(api *gin.RouterGroup, articleHandler *handler.ArticleHandler) {
+	articles := api.Group("/articles")
 	{
-		api.POST("/articles", articleHandler.CreateArticle)
-		api.GET("/articles", articleHandler.GetAllArticles)
-		api.GET("/articles/:id", articleHandler.GetArticleByID)
-		api.PUT("/articles/:id", articleHandler.UpdateArticle)
-		api.DELETE("/articles/:id", articleHandler.DeleteArticle)
+		articles.POST("", articleHandler.CreateArticle)
+		articles.GET("", articleHandler.GetAllArticles)
+		articles.GET("/:id", articleHandler.GetArticleByID)
+		articles.PUT("/:id", articleHandler.UpdateArticle)
+		articles.DELETE("/:id", articleHandler.DeleteArticle)
 	}
 }

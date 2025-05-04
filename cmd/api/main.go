@@ -29,9 +29,22 @@ func main() {
 	articleService := service.NewArticleService(articleRepo)
 	articleHandler := handler.NewArticleHandler(articleService)
 
+	// Inisialisasi repository, service, dan handler untuk User
+	userRepo := repository.NewUserRepository(db)
+	userService := service.NewUserService(userRepo)
+	userHandler := handler.NewUserHandler(userService)
+
 	// Setup router
 	router := gin.Default()
-	routes.SetupRoutes(router, articleHandler)
+
+	// Grup rute API
+	api := router.Group("/api")
+	{
+		// Setup rute untuk Article
+		routes.SetupArticleRoutes(api, articleHandler)
+		// Setup rute untuk User
+		routes.SetupUserRoutes(api, userHandler)
+	}
 
 	// Jalankan server
 	if err := router.Run(":8080"); err != nil {
